@@ -1,0 +1,42 @@
+# ════════════════════════════════════════════════════════════
+# TrustLayer — Render Blueprint
+# render.com auto-deploy from GitHub
+# ════════════════════════════════════════════════════════════
+
+services:
+  - type: web
+    name: trustlayer
+    runtime: python
+    plan: free                          # upgrade to starter for always-on
+    region: oregon
+
+    buildCommand: "./build.sh"
+    startCommand: "uvicorn api.server:app --host 0.0.0.0 --port $PORT"
+
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+      - key: TRUSTLAYER_DB_PATH
+        value: /var/data/trustlayer.db
+      - key: SCAN_API_BASE
+        value: https://8004scan.io/api/v1
+      - key: UPDATE_INTERVAL_MINUTES
+        value: "15"
+      - key: NETWORK
+        value: mainnet
+      # ── أضف هذه من Render Dashboard → Environment ──
+      # - key: WHITELISTED_WALLET_PRIVATE_KEY
+      #   sync: false
+      # - key: AGENT_WALLET_ADDRESS
+      #   sync: false
+      # - key: AGENT_ENTITY_ID
+      #   sync: false
+
+    disk:
+      name: trustlayer-data
+      mountPath: /var/data
+      sizeGB: 1                         # SQLite database
+
+    healthCheckPath: /health
+
+    autoDeploy: true                    # re-deploy on every git push
