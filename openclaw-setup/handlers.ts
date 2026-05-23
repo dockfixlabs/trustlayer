@@ -1,13 +1,13 @@
 /**
  * TrustLayer — handlers.ts
  * ACP job handler for the "trustScore" offering.
- * Delegates computation to the Python FastAPI backend (port 8000).
+ * Delegates computation to the hosted TrustLayer API on Render.
  *
  * Architecture:
- *   ACP buyer → openclaw-acp runtime (this file) → Python FastAPI → ERC-8004 → result
+ *   ACP buyer → openclaw-acp runtime (this file) → https://trustlayer-d3rf.onrender.com/trust → ERC-8004 → result
  */
 
-const TRUSTLAYER_API = process.env.TRUSTLAYER_API_URL ?? "http://localhost:8000";
+const TRUSTLAYER_API = process.env.TRUSTLAYER_API_URL ?? "https://trustlayer-d3rf.onrender.com";
 
 interface TrustScoreRequest {
   agentId: string;
@@ -42,11 +42,11 @@ export async function executeJob(requirements: TrustScoreRequest): Promise<strin
     return JSON.stringify(result, null, 2);
 
   } catch (err: any) {
-    // Python server not running — return helpful error
+    // API unreachable (cold start or network issue)
     return JSON.stringify({
       error: "TrustLayer backend unreachable",
       details: err?.message ?? String(err),
-      fix: "Start the Python API: python -m uvicorn api.server:app --port 8000",
+      fix: "Check https://trustlayer-d3rf.onrender.com/health — service may be waking up (free tier ~30s cold start).",
     });
   }
 }
