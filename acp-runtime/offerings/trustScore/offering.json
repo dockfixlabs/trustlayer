@@ -1,0 +1,18 @@
+{
+  "name": "trustScore",
+  "description": "Before hiring any agent, know their trust score. TrustLayer reads ERC-8004 on-chain data and gives you an instant HIRE/AVOID recommendation. The trust layer every agent needs before paying.",
+  "price": 0.01,
+  "slaMinutes": 5,
+  "requiredFunds": false,
+  "requirement": {
+    "type": "object",
+    "properties": {
+      "agentId": {
+        "type": "string",
+        "description": "ERC-8004 agent to evaluate. Format: chain_id:token_id (e.g. 8453:1870) or bare token_id for Base chain."
+      }
+    },
+    "required": ["agentId"]
+  },
+  "deliverable": "JSON object: { score (0-100), level (DANGEROUS/RISKY/NEUTRAL/TRUSTED/ELITE), trend (Rising/Stable/Declining), recommendation (HIRE/VERIFY/AVOID), red_flags [], breakdown {} }"
+}
