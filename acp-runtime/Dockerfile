@@ -8,8 +8,9 @@ COPY package.json ./
 # Install dependencies (includes acp-node-v2, tsx, etc.)
 RUN npm install
 
-# Copy seller source
+# Copy all TypeScript source files
 COPY seller.ts ./
+COPY buyer.ts ./
 
-# Run the v2 seller
+# Default: run the v2 seller (buyer service overrides via Railway start command)
 CMD ["npx", "tsx", "seller.ts"]
