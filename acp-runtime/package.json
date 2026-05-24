@@ -1,0 +1,14 @@
+{
+  "name": "trustlayer-seller",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "start": "tsx seller.ts"
+  },
+  "dependencies": {
+    "@virtuals-protocol/acp-node-v2": "latest",
+    "@account-kit/infra": "latest",
+    "tsx": "latest",
+    "typescript": "latest"
+  }
+}
